@@ -1,0 +1,6 @@
+# Backups locais gerados durante edicao
+*.bak
+
+# Lixo de sistema
+.DS_Store
+Thumbs.db
