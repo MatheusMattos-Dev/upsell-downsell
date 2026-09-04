@@ -153,6 +153,9 @@
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      /* A barra fixa tem ~68px; sem esta reserva ela cobre o rodapé. O env()
+         soma a faixa do indicador de home no iPhone. */
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
     }
 
     img,
@@ -306,13 +309,52 @@
       background: var(--ember-dark);
     }
 
-    .btn--bundle {
-      background: var(--rope);
-      color: var(--ink);
+    /* Botão de compra: duas linhas, seta e presença. É o elemento mais
+       importante da página e antes tinha o mesmo peso de um rótulo. */
+    .btn--buy {
+      flex-direction: column;
+      gap: 5px;
+      padding: 17px 26px;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      background: var(--ember);
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(255, 75, 31, 0.28);
     }
 
-    .btn--bundle:hover {
-      background: #CF9C17;
+    .btn--buy:hover {
+      background: var(--ember-dark);
+    }
+
+    .btn--buy__line {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .btn--buy__line .icon {
+      width: 18px;
+      height: 18px;
+      /* A seta anda um fio no hover: confirma que é clicável sem virar enfeite. */
+      transition: transform 0.18s ease;
+    }
+
+    .btn--buy:hover .btn--buy__line .icon {
+      transform: translateX(4px);
+    }
+
+    .btn--buy__sub {
+      font-size: 0.73rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      opacity: 0.82;
+    }
+
+    /* Na barra fixa o botão é compacto: só a linha principal. */
+    .sticky-bar .btn--buy {
+      padding: 13px 20px;
+      font-size: 0.8rem;
+      box-shadow: none;
     }
 
     .btn--block {
@@ -414,6 +456,8 @@
     .brand {
       display: flex;
       align-items: center;
+      /* 30px de altura no celular: abaixo do alvo de toque confortável. */
+      min-height: 44px;
       gap: 10px;
       text-decoration: none;
       color: var(--paper);
@@ -459,7 +503,7 @@
     .brand__word span {
       display: block;
       font-family: var(--font-mono);
-      font-size: 0.55rem;
+      font-size: 0.7rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--rope);
@@ -467,6 +511,7 @@
     }
 
     .header-cta {
+      min-height: 44px;
       padding: 11px 20px;
       font-size: 0.74rem;
     }
@@ -501,7 +546,7 @@
 
       .header-cta {
         padding: 8px 14px;
-        font-size: 0.68rem;
+        font-size: 0.72rem;
         letter-spacing: 0.04em;
       }
     }
@@ -620,6 +665,34 @@
       padding-bottom: 2px;
     }
 
+    /* Ancoragem no hero: o R$ 122,50 só aparecia lá embaixo, no bloco da
+       oferta. O valor percebido chegava tarde demais. */
+    .hero__anchor {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 0 0 22px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hero__anchor-was {
+      color: var(--graphite);
+      text-decoration: line-through;
+    }
+
+    .hero__anchor-save {
+      background: rgba(0, 184, 90, 0.14);
+      color: #0A7A3D;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 11px;
+      border-radius: 3px;
+    }
+
     .hero__desc {
       font-size: clamp(1rem, 1.6vw, 1.12rem);
       color: var(--graphite);
@@ -656,7 +729,7 @@
     }
 
     .hero__cta {
-      box-shadow: 0 8px 24px rgba(228, 174, 35, 0.28);
+      box-shadow: 0 12px 30px rgba(255, 75, 31, 0.32);
     }
 
     .hero__visual img {
@@ -677,7 +750,7 @@
       background: var(--ink);
       color: var(--rope);
       font-family: var(--font-mono);
-      font-size: 0.66rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -732,7 +805,8 @@
 
     .timer__lbl {
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      /* 9,6px era ilegível no celular. */
+      font-size: 0.69rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(236, 231, 222, 0.5);
@@ -745,6 +819,15 @@
       font-size: clamp(1.8rem, 4vw, 2.4rem);
       line-height: 1;
       color: var(--rope);
+    }
+
+    .timer--ended .timer__digits {
+      display: none;
+    }
+
+    .timer--ended .timer__head {
+      color: var(--ember);
+      margin-bottom: 0;
     }
 
     .timer__note {
@@ -1477,9 +1560,11 @@
       color: var(--paper);
       border: 1px solid var(--line-on-ink);
       border-radius: 3px;
-      padding: 8px 12px;
+      /* 32px de altura era alvo de toque curto pra um controle de vídeo. */
+      min-height: 44px;
+      padding: 8px 14px;
       font-family: var(--font-mono);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1780,7 +1865,7 @@
 
     .sticky-bar__sub {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: rgba(236, 231, 222, 0.5);
@@ -1932,6 +2017,11 @@
             <span class="price-hit">R$ 12,50</span>
           </h1>
 
+          <p class="hero__anchor">
+            <span class="hero__anchor-was">De R$ 122,50</span>
+            <span class="hero__anchor-save">Você economiza R$ 110,00</span>
+          </p>
+
           <p class="hero__desc">
             Não é um material solto: é o acervo inteiro numa compra só.
             <strong>250 treinos estruturados</strong>, a <strong>Master Class de 150 páginas</strong>,
@@ -1964,10 +2054,14 @@
           </div>
 
           <div class="hero__actions">
-            <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--bundle btn--block btn--wrap hero__cta"
-              id="btnHeroCta" target="_blank" rel="noopener"
-              data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
-              Adquirir todos os produtos — R$ 12,50
+            <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--buy btn--block btn--wrap hero__cta" id="btnHeroCta"
+              target="_blank" rel="noopener"
+              data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo"
+              data-price="12.50">
+              <span class="btn--buy__line">Quero todos os produtos<svg class="icon">
+                  <use href="#icon-pace" />
+                </svg></span>
+              <span class="btn--buy__sub">R$ 12,50 · pagamento único</span>
             </a>
             <p class="trust-line">
               <svg class="icon">
@@ -2034,11 +2128,15 @@
             <span class="amount">R$ 12,50</span>
             <span class="terms">À vista no Pix ou cartão</span>
           </div>
-          <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--bundle btn--block btn--wrap"
-            id="btnMainCta" target="_blank" rel="noopener"
-            data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
-            Adquirir todos os produtos — R$ 12,50
-          </a>
+          <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--buy btn--block btn--wrap" id="btnMainCta"
+              target="_blank" rel="noopener"
+              data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo"
+              data-price="12.50">
+              <span class="btn--buy__line">Quero todos os produtos<svg class="icon">
+                  <use href="#icon-pace" />
+                </svg></span>
+              <span class="btn--buy__sub">R$ 12,50 · acesso imediato</span>
+            </a>
           <p class="trust-line">
             <svg class="icon">
               <use href="#icon-shield" />
@@ -2637,10 +2735,14 @@
           </p>
         </div>
 
-        <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--bundle btn--block btn--wrap"
+        <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--buy btn--block btn--wrap"
           target="_blank" rel="noopener"
-          data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
-          Sim, quero todos os produtos por R$ 12,50
+          data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo"
+          data-price="12.50">
+          <span class="btn--buy__line">Sim, quero todos os produtos<svg class="icon">
+              <use href="#icon-pace" />
+            </svg></span>
+          <span class="btn--buy__sub">R$ 12,50 · pagamento único</span>
         </a>
         <p class="trust-line">
           <svg class="icon">
@@ -2662,10 +2764,13 @@
       <div class="sticky-bar__price">R$ 12,50</div>
       <div class="sticky-bar__sub">Todos os produtos</div>
     </div>
-    <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--bundle"
+    <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--buy"
       target="_blank" rel="noopener"
-      data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
-      Garantir agora
+      data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo"
+      data-price="12.50">
+      <span class="btn--buy__line">Garantir agora<svg class="icon">
+          <use href="#icon-pace" />
+        </svg></span>
     </a>
   </aside>
 
@@ -2773,9 +2878,10 @@
           var remaining = expiryTime - Math.floor(Date.now() / 1000);
 
           if (remaining <= 0) {
-            minEl.textContent = "00";
-            secEl.textContent = "00";
-            if (timerLabel) timerLabel.textContent = "Última chamada disponível:";
+            /* Esconde os dígitos em vez de deixar 00:00 congelado: relógio
+               morto logo acima do botão derruba a oferta em vez de apressá-la. */
+            timerBox.classList.add("timer--ended");
+            if (timerLabel) timerLabel.textContent = "Última chamada desta condição";
             timerBox.style.borderLeftColor = "var(--ember)";
             /* Zerado não muda mais nada na tela; deixar o intervalo vivo só
                queimava bateria em quem fica lendo a página. */
