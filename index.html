@@ -3,14 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Oferta Especial Início de Mês — Todos os Produtos HYROX por R$ 12,50</title>
   <meta name="description"
     content="COMEÇO DE MÊS: adquira TODOS os produtos HYROX por apenas R$ 12,50. 250 aulas prontas, Master Class de 150 páginas, manual do coach e plano de 12 semanas.">
 
   <!-- OpenGraph / WhatsApp -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="🔥 OFERTA INÍCIO DE MÊS — Todos os Produtos HYROX por R$ 12,50">
+  <meta property="og:title" content="OFERTA INÍCIO DE MÊS — Todos os Produtos HYROX por R$ 12,50">
   <meta property="og:description"
     content="O acervo inteiro num acesso só. Pare de improvisar treinos de última hora.">
   <meta property="og:image"
@@ -126,6 +126,7 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--paper);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -152,8 +153,6 @@
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      /* Espaço da barra fixa, pra ela não cobrir o rodapé. */
-      padding-bottom: 84px;
     }
 
     img,
@@ -395,6 +394,118 @@
       margin-inline: auto;
     }
 
+    /* ---------- Cabeçalho de marca ----------
+       Mesmo brand da hyrox-page. Aqui a barra é sólida e estática, não fixa e
+       transparente: o hero desta página é claro, e uma barra fixa comeria tela
+       no celular justo onde mora a headline. Também não leva navegação —
+       numa página de oferta, link de menu é porta de saída. */
+    .site-header {
+      background: var(--ink);
+      padding: 14px 0;
+    }
+
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--paper);
+    }
+
+    .brand__mark {
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--ember);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ember);
+      flex-shrink: 0;
+      transition: transform 0.4s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .brand:hover .brand__mark {
+      transform: rotate(-25deg) scale(1.08);
+      background: var(--ember);
+      color: #fff;
+    }
+
+    .brand__mark .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand__word {
+      line-height: 1;
+    }
+
+    .brand__word strong {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .brand__word span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rope);
+      margin-top: 2px;
+    }
+
+    .header-cta {
+      padding: 11px 20px;
+      font-size: 0.74rem;
+    }
+
+    @media (max-width: 560px) {
+      .site-header {
+        padding: 10px 0;
+      }
+
+      .brand {
+        gap: 8px;
+      }
+
+      .brand__mark {
+        width: 30px;
+        height: 30px;
+      }
+
+      .brand__mark .icon {
+        width: 15px;
+        height: 15px;
+      }
+
+      .brand__word strong {
+        font-size: 1.15rem;
+      }
+
+      .brand__word span {
+        font-size: 0.5rem;
+        letter-spacing: 0.18em;
+      }
+
+      .header-cta {
+        padding: 8px 14px;
+        font-size: 0.68rem;
+        letter-spacing: 0.04em;
+      }
+    }
+
     /* ---------- Ticker de urgência ---------- */
     .ticker-bar {
       background: var(--ember);
@@ -413,6 +524,21 @@
 
     .ticker-track:hover {
       animation-play-state: paused;
+    }
+
+    /* O ticker é flex com gap de 18px; solto, o ícone virava um item próprio e
+       ficava a 18px do texto que ele rotula. */
+    .ticker-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .ticker-item .icon {
+      width: 13px;
+      height: 13px;
+      stroke-width: 2;
+      opacity: 0.85;
     }
 
     .ticker-item {
@@ -445,7 +571,9 @@
 
     /* ---------- Hero ---------- */
     .hero {
-      padding-block: clamp(44px, 6vw, 84px) clamp(36px, 5vw, 64px);
+      /* Marca e ticker já dão peso visual acima; 84px de papel vazio antes da
+         headline só empurrava a oferta pra fora da primeira tela. */
+      padding-block: clamp(26px, 3.5vw, 52px) clamp(32px, 4.5vw, 60px);
     }
 
     .hero__grid {
@@ -509,6 +637,26 @@
       width: 100%;
       max-width: 400px;
       margin-inline: auto;
+      display: block;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .hero__visual:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero__visual:active {
+      transform: scale(0.99);
+    }
+
+    .hero__actions {
+      margin-top: 20px;
+    }
+
+    .hero__cta {
+      box-shadow: 0 8px 24px rgba(228, 174, 35, 0.28);
     }
 
     .hero__visual img {
@@ -763,14 +911,186 @@
       }
     }
 
-    /* ---------- Cards do pacote ---------- */
-    .pack-grid {
+    /* ---------- Faixa de CTA ----------
+       Interrupção curta entre seções, não uma seção inteira: a página é longa
+       e sem isso o visitante só reencontra um botão lá no fim. */
+    .cta-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: clamp(18px, 3vw, 32px);
+      padding: clamp(24px, 3.2vw, 34px) clamp(22px, 3.2vw, 38px);
+      border: 1px solid var(--line-on-paper);
+      border-left: 4px solid var(--ember);
+      border-radius: 6px;
+      background: var(--paper);
+    }
+
+    .cta-strip__copy {
+      min-width: 0;
+    }
+
+    .cta-strip__copy .eyebrow {
+      margin-bottom: 8px;
+    }
+
+    .cta-strip__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin: 0;
+      max-width: 24ch;
+    }
+
+    .cta-strip__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .cta-strip .btn {
+      font-size: 0.74rem;
+      padding: 14px 20px;
+    }
+
+    .cta-strip .trust-line {
+      margin: 0;
+      font-size: 0.66rem;
+    }
+
+    @media (max-width: 900px) {
+      .cta-strip {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      .cta-strip__copy .eyebrow {
+        justify-content: center;
+      }
+
+      .cta-strip__title {
+        max-width: none;
+      }
+    }
+
+    /* ---------- Blocos de dor ---------- */
+    .pain-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .pain {
+      border: 1px solid var(--line-on-ink);
+      border-top: 3px solid var(--ember);
+      border-radius: 6px;
+      padding: 24px 22px;
+      background: rgba(236, 231, 222, 0.04);
+    }
+
+    .pain__num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--ember);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .pain h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 1.35rem;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      margin: 0 0 10px;
+    }
+
+    .pain p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: rgba(236, 231, 222, 0.72);
+    }
+
+    /* ---------- Qualificação ---------- */
+    .fit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 22px;
     }
 
+    .fit {
+      border: 1px solid var(--line-on-paper);
+      border-radius: 6px;
+      padding: 26px 24px;
+      background: var(--paper);
+    }
+
+    .fit--yes {
+      border-left: 4px solid var(--green);
+    }
+
+    .fit--no {
+      border-left: 4px solid var(--graphite);
+      background: var(--paper-alt);
+    }
+
+    .fit h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 1.4rem;
+      line-height: 1;
+      margin: 0 0 16px;
+    }
+
+    .fit ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .fit li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+    }
+
+    .fit li .icon {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      margin-top: 0.2em;
+    }
+
+    .fit--yes li .icon {
+      color: var(--green);
+    }
+
+    .fit--no li {
+      color: var(--graphite);
+    }
+
+    .fit--no li .icon {
+      color: var(--graphite);
+    }
+
+    /* ---------- Cards do pacote ---------- */
+
     .pack-card {
+      height: 100%;
       background: var(--paper);
       border: 1px solid var(--line-on-paper);
       border-radius: 6px;
@@ -854,37 +1174,20 @@
       color: var(--green);
     }
 
-    .pack-card--wide {
-      grid-column: 1 / -1;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    .pack-card--wide .pack-card__media {
-      width: 180px;
-      flex-shrink: 0;
-      aspect-ratio: 1;
+    /* O card de suporte não tem capa pra mostrar; ganha o mesmo recorte dos
+       outros, com o ícone no lugar da imagem, pra não quebrar o trilho. */
+    .pack-card__media--icon {
       display: grid;
       place-items: center;
       background: rgba(228, 174, 35, 0.14);
+      border-bottom: 1px solid var(--line-on-paper);
     }
 
-    .pack-card--wide .icon {
-      width: 46px;
-      height: 46px;
+    .pack-card__media--icon .icon {
+      width: 54px;
+      height: 54px;
       color: var(--rope);
-    }
-
-    @media (max-width: 640px) {
-      .pack-card--wide {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .pack-card--wide .pack-card__media {
-        width: 100%;
-        aspect-ratio: 16 / 7;
-      }
+      stroke-width: 1.4;
     }
 
     /* ---------- Tabela da conta ---------- */
@@ -951,18 +1254,7 @@
     }
 
     /* ---------- Prévias ---------- */
-    .previews {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      padding-bottom: 14px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-
     .preview {
-      flex: 0 0 240px;
-      scroll-snap-align: start;
       margin: 0;
     }
 
@@ -982,6 +1274,138 @@
       text-transform: uppercase;
       color: var(--graphite);
       margin-top: 9px;
+    }
+
+    /* ---------- Carrossel ----------
+       A barra de rolagem nativa entregava o mecanismo mas ficava feia e não
+       dizia quanto ainda falta. Aqui o trilho continua rolável no dedo e no
+       trackpad; as setas e a barra de progresso são para quem usa mouse. */
+    .carousel {
+      position: relative;
+    }
+
+    .carousel__viewport {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      /* Respiro pro hover dos cards não ser cortado pelo overflow. */
+      padding: 4px 4px 8px;
+      margin: -4px -4px -8px;
+    }
+
+    .carousel__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel__item {
+      flex: 0 0 var(--item-w, 280px);
+      scroll-snap-align: start;
+      display: flex;
+    }
+
+    .carousel__item > * {
+      width: 100%;
+    }
+
+    .carousel--packs {
+      --item-w: min(300px, 78vw);
+    }
+
+    .carousel--previews {
+      --item-w: min(250px, 66vw);
+    }
+
+    .carousel__nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .carousel__nav[hidden] {
+      display: none;
+    }
+
+    .carousel__btn {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 3px;
+      border: 2px solid var(--line-on-paper);
+      background: transparent;
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .carousel__btn .icon {
+      width: 19px;
+      height: 19px;
+    }
+
+    .carousel__btn--prev .icon {
+      transform: scaleX(-1);
+    }
+
+    .carousel__btn:hover:not([disabled]) {
+      border-color: var(--ember);
+      background: var(--ember);
+      color: #fff;
+    }
+
+    .carousel__btn[disabled] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .carousel__rail {
+      position: relative;
+      flex: 1;
+      height: 2px;
+      background: var(--line-on-paper);
+      overflow: hidden;
+    }
+
+    .carousel__bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      background: var(--ember);
+      transition: transform 0.15s ease, width 0.15s ease;
+    }
+
+    .carousel__count {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--graphite);
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Variante sobre fundo escuro, caso um carrossel vá pra section--dark. */
+    .section--dark .carousel__btn,
+    .section--dark-2 .carousel__btn {
+      border-color: var(--line-on-ink);
+      color: var(--paper);
+    }
+
+    .section--dark .carousel__rail,
+    .section--dark-2 .carousel__rail {
+      background: var(--line-on-ink);
+    }
+
+    .section--dark .carousel__count,
+    .section--dark-2 .carousel__count {
+      color: rgba(236, 231, 222, 0.55);
     }
 
     /* ---------- Prova social ---------- */
@@ -1171,6 +1595,24 @@
       margin-top: 8px;
     }
 
+    @media (max-width: 640px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat {
+        padding: 18px 12px;
+      }
+
+      .stat:nth-child(2n + 1) {
+        border-left: 0;
+      }
+
+      .stat:nth-child(n + 3) {
+        border-top: 1px solid var(--line-on-ink);
+      }
+    }
+
     /* ---------- Garantia ---------- */
     .guarantee {
       display: flex;
@@ -1288,7 +1730,7 @@
       background: var(--ink-2);
       color: rgba(236, 231, 222, 0.45);
       text-align: center;
-      padding: 34px 0;
+      padding: 34px 0 calc(34px + 84px + env(safe-area-inset-bottom, 0px));
       font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.06em;
@@ -1307,16 +1749,14 @@
       z-index: 1000;
       background: rgba(14, 13, 8, 0.96);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-top: 2px solid var(--rope);
-      padding: 10px var(--pad-inline);
+      padding: 10px var(--pad-inline) calc(10px + env(safe-area-inset-bottom, 0px));
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 18px;
       transform: translateY(110%);
-      /* Só o transform deixava o link alcançável pelo Tab enquanto a barra
-         estava marcada como aria-hidden. visibility tira do foco em qualquer
-         navegador; a transição segura o valor até o fim da saída. */
       visibility: hidden;
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
     }
@@ -1346,19 +1786,11 @@
       color: rgba(236, 231, 222, 0.5);
     }
 
-    @media (max-width: 560px) {
-      .sticky-bar {
-        gap: 12px;
-        justify-content: space-between;
-      }
-
-      .sticky-bar .btn {
-        padding: 13px 16px;
-        font-size: 0.74rem;
-      }
+    #checkoutSection {
+      scroll-margin-top: 20px;
     }
 
-    /* ---------- Responsivo do hero ---------- */
+    /* ---------- Responsivo Geral & Mobile ---------- */
     @media (max-width: 900px) {
       .hero__grid {
         grid-template-columns: 1fr;
@@ -1372,19 +1804,116 @@
         max-width: none;
       }
     }
+
+    @media (max-width: 560px) {
+      .hero {
+        padding-block: 16px 28px;
+      }
+
+      .hero__heading {
+        font-size: clamp(2rem, 9.2vw, 2.7rem);
+        margin: 0 0 14px;
+      }
+
+      .hero__desc {
+        font-size: 0.95rem;
+        margin: 0 0 16px;
+      }
+
+      .timer {
+        padding: 14px 16px;
+        margin-bottom: 18px;
+      }
+
+      .timer__val {
+        font-size: 2.2rem;
+      }
+
+      .timer__note {
+        font-size: 0.76rem;
+        margin-top: 8px;
+      }
+
+      .hero__actions {
+        margin-top: 16px;
+        margin-bottom: 24px;
+      }
+
+      .hero__visual {
+        max-width: 340px;
+      }
+
+      .sticky-bar {
+        gap: 12px;
+        justify-content: space-between;
+        padding-inline: 16px;
+      }
+
+      .sticky-bar__price {
+        font-size: 1.45rem;
+      }
+
+      .sticky-bar__sub {
+        font-size: 0.56rem;
+      }
+
+      .sticky-bar .btn {
+        padding: 12px 14px;
+        font-size: 0.74rem;
+        flex: 1;
+        max-width: 190px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .offer-bundle {
+        padding: 24px 16px;
+      }
+
+      .calc__row {
+        padding: 12px 14px;
+        font-size: 0.88rem;
+      }
+
+      .fit {
+        padding: 20px 18px;
+      }
+
+      .cta-strip {
+        padding: 20px 16px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- Cabeçalho de marca -->
+  <header class="site-header">
+    <div class="container">
+      <a href="#top" class="brand" id="top">
+        <span class="brand__mark"><svg class="icon">
+            <use href="#icon-clock" />
+          </svg></span>
+        <span class="brand__word"><strong>HYROX</strong><span>Daily WOD</span></span>
+      </a>
+      <a href="#checkoutSection" class="btn btn--primary header-cta">Ver a oferta</a>
+    </div>
+  </header>
+
   <!-- Ticker de urgência -->
   <div class="ticker-bar" aria-hidden="true">
     <div class="ticker-track">
-      <div class="ticker-item">⚡ OFERTA DE INÍCIO DE MÊS <span class="ticker-dot"></span></div>
+      <div class="ticker-item"><span class="ticker-label"><svg class="icon">
+          <use href="#icon-clock" />
+        </svg>OFERTA DE INÍCIO DE MÊS</span><span class="ticker-dot"></span></div>
       <div class="ticker-item">TODOS OS PRODUTOS POR R$ 12,50 <span class="ticker-dot"></span></div>
       <div class="ticker-item">PAGAMENTO ÚNICO · ACESSO IMEDIATO <span class="ticker-dot"></span></div>
       <div class="ticker-item">7 DIAS DE GARANTIA INCONDICIONAL <span class="ticker-dot"></span></div>
-      <div class="ticker-item">⚡ OFERTA DE INÍCIO DE MÊS <span class="ticker-dot"></span></div>
+      <div class="ticker-item"><span class="ticker-label"><svg class="icon">
+          <use href="#icon-clock" />
+        </svg>OFERTA DE INÍCIO DE MÊS</span><span class="ticker-dot"></span></div>
       <div class="ticker-item">TODOS OS PRODUTOS POR R$ 12,50 <span class="ticker-dot"></span></div>
       <div class="ticker-item">PAGAMENTO ÚNICO · ACESSO IMEDIATO <span class="ticker-dot"></span></div>
       <div class="ticker-item">7 DIAS DE GARANTIA INCONDICIONAL <span class="ticker-dot"></span></div>
@@ -1433,15 +1962,28 @@
               os materiais voltam a ser vendidos separadamente, somando R$ 122,50.
             </p>
           </div>
+
+          <div class="hero__actions">
+            <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--bundle btn--block btn--wrap hero__cta"
+              id="btnHeroCta" target="_blank" rel="noopener"
+              data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
+              Adquirir todos os produtos — R$ 12,50
+            </a>
+            <p class="trust-line">
+              <svg class="icon">
+                <use href="#icon-shield" />
+              </svg>Pagamento único · Acesso imediato · 7 dias de garantia
+            </p>
+          </div>
         </div>
 
-        <div class="hero__visual">
+        <a href="#checkoutSection" class="hero__visual" aria-label="Ver detalhes e adquirir o pacote completo">
           <span class="hero__tag">Pacote All-In-One</span>
           <img
             src="https://fiapy.nyc3.cdn.digitaloceanspaces.com/static/6a34d146429e4f28412fa8a1/9e8a2e336c21c4f18e04_-_oferta_comeco_de_mes_menos_1mb.jpg"
             alt="Oferta Especial Início de Mês — Todos os produtos HYROX"
             width="941" height="1672" loading="eager" fetchpriority="high" decoding="async">
-        </div>
+        </a>
       </div>
     </div>
   </header>
@@ -1511,98 +2053,172 @@
     </div>
   </section>
 
-  <!-- 01 · O QUE ENTRA -->
+  <!-- 01 · O PROBLEMA -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">01 · O problema</p>
+        <h2 class="section-title">Domingo à noite, montando aula de novo</h2>
+        <p class="lede">
+          Não é falta de conhecimento. É que ninguém tem tempo de planejar um ano inteiro de treino
+          sozinho, toda semana, de graça.
+        </p>
+      </div>
+
+      <div class="pain-grid" data-reveal>
+        <article class="pain">
+          <span class="pain__num">01</span>
+          <h3>Improviso a turma sente</h3>
+          <p>
+            Treino montado às pressas não tem progressão. O aluno treina três meses, não vê evolução
+            e some — e você nem sabe dizer onde o plano falhou, porque não havia plano.
+          </p>
+        </article>
+
+        <article class="pain">
+          <span class="pain__num">02</span>
+          <h3>Cada professor passa uma coisa</h3>
+          <p>
+            Sem material padrão, a qualidade da aula muda conforme quem está na frente. O box perde
+            identidade e o aluno percebe antes de você.
+          </p>
+        </article>
+
+        <article class="pain">
+          <span class="pain__num">03</span>
+          <h3>Você trabalha de graça</h3>
+          <p>
+            Quatro, cinco horas por semana planejando é um turno inteiro que ninguém te paga.
+            No mês, é uma semana de trabalho invisível.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · O QUE ENTRA -->
   <section class="section section--paper-alt">
     <div class="container">
       <div class="section__head" data-reveal>
-        <p class="eyebrow">01 · O pacote</p>
+        <p class="eyebrow">02 · O pacote</p>
         <h2 class="section-title">Tudo o que você leva nesta compra</h2>
         <p class="lede">
           Cinco entregas que hoje são vendidas separadas. Nesta condição, todas entram juntas.
         </p>
       </div>
 
-      <div class="pack-grid" data-reveal>
-        <article class="pack-card">
-          <div class="pack-card__media">
-            <span class="pack-card__tag">Carro-Chefe</span>
-            <img src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/oferta_250_pag_.jpg"
-              alt="250 Aulas Prontas — Daily WOD" width="1200" height="1500" loading="lazy" decoding="async">
+      <div class="carousel carousel--packs" data-carousel data-reveal>
+        <div class="carousel__viewport" tabindex="0" role="group" aria-label="Materiais do pacote — role para o lado para ver todos">
+          <div class="carousel__item">
+            <article class="pack-card">
+              <div class="pack-card__media">
+                <span class="pack-card__tag">Carro-Chefe</span>
+                <img src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/oferta_250_pag_.jpg"
+                  alt="250 Aulas Prontas — Daily WOD" width="1200" height="1500" loading="lazy" decoding="async">
+              </div>
+              <div class="pack-card__body">
+                <h3>250 Aulas Prontas (Daily WOD)</h3>
+                <p>O ano inteiro planejado: aquecimento específico, estações de trabalho, cargas calculadas e adaptações
+                  para alunos iniciantes, intermediários e avançados.</p>
+                <div class="pack-card__val">Valor avulso: R$ 27,00</div>
+              </div>
+            </article>
           </div>
-          <div class="pack-card__body">
-            <h3>250 Aulas Prontas (Daily WOD)</h3>
-            <p>O ano inteiro planejado: aquecimento específico, estações de trabalho, cargas calculadas e adaptações
-              para alunos iniciantes, intermediários e avançados.</p>
-            <div class="pack-card__val">Valor avulso: R$ 27,00</div>
-          </div>
-        </article>
 
-        <article class="pack-card">
-          <div class="pack-card__media">
-            <span class="pack-card__tag">Fundamentação</span>
-            <img src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/oferta_150_pag.jpg"
-              alt="HYROX Master Class — 150 páginas" width="1200" height="1598" loading="lazy" decoding="async">
+          <div class="carousel__item">
+            <article class="pack-card">
+              <div class="pack-card__media">
+                <span class="pack-card__tag">Fundamentação</span>
+                <img src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/oferta_150_pag.jpg"
+                  alt="HYROX Master Class — 150 páginas" width="1200" height="1598" loading="lazy" decoding="async">
+              </div>
+              <div class="pack-card__body">
+                <h3>HYROX Master Class (150 páginas)</h3>
+                <p>A bíblia técnica por trás do método: fisiologia aplicada, transições de corrida, como cadenciar o
+                  SkiErg, Sled Push/Pull, Burpee Broad Jumps e Wall Balls.</p>
+                <div class="pack-card__val">Valor avulso: R$ 10,00</div>
+              </div>
+            </article>
           </div>
-          <div class="pack-card__body">
-            <h3>HYROX Master Class (150 páginas)</h3>
-            <p>A bíblia técnica por trás do método: fisiologia aplicada, transições de corrida, como cadenciar o
-              SkiErg, Sled Push/Pull, Burpee Broad Jumps e Wall Balls.</p>
-            <div class="pack-card__val">Valor avulso: R$ 10,00</div>
-          </div>
-        </article>
 
-        <article class="pack-card">
-          <div class="pack-card__media">
-            <span class="pack-card__tag">Brinde Especial</span>
-            <img
-              src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-coach-01-capa.jpg"
-              alt="Manual do Coach Híbrido" width="1000" height="1415" loading="lazy" decoding="async">
+          <div class="carousel__item">
+            <article class="pack-card">
+              <div class="pack-card__media">
+                <span class="pack-card__tag">Brinde Especial</span>
+                <img
+                  src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-coach-01-capa.jpg"
+                  alt="Manual do Coach Híbrido" width="1000" height="1415" loading="lazy" decoding="async">
+              </div>
+              <div class="pack-card__body">
+                <h3>Manual do Coach & Testes Práticos</h3>
+                <p>Os 5 testes em 10 minutos para nivelar seus alunos, as 12 correções de biomecânica e os comandos exatos
+                  de voz para gerenciar grandes turmas.</p>
+                <div class="pack-card__val">Valor avulso: R$ 40,50</div>
+              </div>
+            </article>
           </div>
-          <div class="pack-card__body">
-            <h3>Manual do Coach & Testes Práticos</h3>
-            <p>Os 5 testes em 10 minutos para nivelar seus alunos, as 12 correções de biomecânica e os comandos exatos
-              de voz para gerenciar grandes turmas.</p>
-            <div class="pack-card__val">Valor avulso: R$ 40,50</div>
-          </div>
-        </article>
 
-        <article class="pack-card">
-          <div class="pack-card__media">
-            <span class="pack-card__tag">Periodização</span>
-            <img
-              src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-plano-01-capa.jpg"
-              alt="Plano de 12 Semanas" width="1000" height="1415" loading="lazy" decoding="async">
+          <div class="carousel__item">
+            <article class="pack-card">
+              <div class="pack-card__media">
+                <span class="pack-card__tag">Periodização</span>
+                <img
+                  src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-plano-01-capa.jpg"
+                  alt="Plano de 12 Semanas" width="1000" height="1415" loading="lazy" decoding="async">
+              </div>
+              <div class="pack-card__body">
+                <h3>Programação Oficial de 12 Semanas</h3>
+                <p>Periodização estruturada em blocos: mapa semanal, controle de volume, picos de intensidade e tapering
+                  para quem quer competir ou atingir o ápice físico.</p>
+                <div class="pack-card__val">Valor avulso: R$ 45,00</div>
+              </div>
+            </article>
           </div>
-          <div class="pack-card__body">
-            <h3>Programação Oficial de 12 Semanas</h3>
-            <p>Periodização estruturada em blocos: mapa semanal, controle de volume, picos de intensidade e tapering
-              para quem quer competir ou atingir o ápice físico.</p>
-            <div class="pack-card__val">Valor avulso: R$ 45,00</div>
-          </div>
-        </article>
 
-        <article class="pack-card pack-card--wide">
-          <div class="pack-card__media">
+          <div class="carousel__item">
+            <article class="pack-card">
+              <div class="pack-card__media pack-card__media--icon">
+                <svg class="icon">
+                  <use href="#icon-pace" />
+                </svg>
+              </div>
+              <div class="pack-card__body">
+                <h3>Suporte & Direcionamento na Evolução</h3>
+                <p>Você não fica sozinho com arquivos soltos. Orientação para dúvidas na aplicação da metodologia e
+                  aplicação prática na sua rotina ou box.</p>
+                <div class="pack-card__val pack-card__val--free">Incluso no pacote de início de mês</div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="carousel__nav">
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev
+            aria-label="Material anterior">
             <svg class="icon">
-              <use href="#icon-users" />
+              <use href="#icon-pace" />
             </svg>
+          </button>
+          <button type="button" class="carousel__btn" data-carousel-next
+            aria-label="Material seguinte">
+            <svg class="icon">
+              <use href="#icon-pace" />
+            </svg>
+          </button>
+          <div class="carousel__rail" aria-hidden="true">
+            <span class="carousel__bar" data-carousel-bar></span>
           </div>
-          <div class="pack-card__body">
-            <h3>Suporte & Direcionamento na Evolução</h3>
-            <p>Você não fica sozinho com arquivos soltos. Orientação para dúvidas na aplicação da metodologia e
-              aplicação prática na sua rotina ou box.</p>
-            <div class="pack-card__val pack-card__val--free">Incluso no pacote de início de mês</div>
-          </div>
-        </article>
+          <span class="carousel__count" data-carousel-count></span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 02 · A CONTA -->
+  <!-- 03 · A CONTA -->
   <section class="section">
     <div class="container">
       <div class="section__head" data-reveal>
-        <p class="eyebrow">02 · A conta</p>
+        <p class="eyebrow">03 · A conta</p>
         <h2 class="section-title">Por que fechar agora</h2>
         <p class="lede">Some o preço avulso de cada material e compare com o que esta página cobra por todos juntos.</p>
       </div>
@@ -1640,67 +2256,130 @@
     </div>
   </section>
 
-  <!-- 03 · POR DENTRO -->
-  <section class="section section--paper-alt">
+  <!-- FAIXA DE CTA 1 -->
+  <section class="section section--tight section--paper-alt">
     <div class="container">
-      <div class="section__head" data-reveal>
-        <p class="eyebrow">03 · Por dentro</p>
-        <h2 class="section-title">Veja páginas reais do material</h2>
-        <p class="lede">Arraste para o lado para folhear algumas páginas do que será seu em instantes.</p>
-      </div>
-
-      <div class="previews" data-reveal>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-02-mesociclos.jpg"
-            alt="Mesociclos das Aulas" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>250 Aulas · Os 10 Mesociclos</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-03-aula001.jpg"
-            alt="Aula 001 na íntegra" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>250 Aulas · Treino 001 Completo</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-04-aula003.jpg"
-            alt="Aula 003 na íntegra" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>250 Aulas · Treino 003 Detalhado</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/mc-02-indice.jpg"
-            alt="Índice da Master Class" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>Master Class · Sumário Completo</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/mc-04-fisiologia.jpg"
-            alt="Fisiologia Aplicada" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>Master Class · Fisiologia do HYROX</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-coach-03-testes.jpg"
-            alt="5 Testes em 10 Minutos" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>Coaches · Bateria de Testes</figcaption>
-        </figure>
-        <figure class="preview">
-          <img
-            src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-plano-03-semana01.jpg"
-            alt="Semana 01 do Plano" width="1000" height="1415" loading="lazy" decoding="async">
-          <figcaption>Plano 12 Semanas · Semana 01</figcaption>
-        </figure>
+      <div class="cta-strip" data-reveal>
+        <div class="cta-strip__copy">
+          <p class="eyebrow">A diferença é R$ 110,00</p>
+          <h2 class="cta-strip__title">Os quatro materiais completos por R$ 12,50</h2>
+        </div>
+        <div class="cta-strip__actions">
+          <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--primary" target="_blank" rel="noopener" data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
+            Quero todos os produtos
+          </a>
+          <p class="trust-line">
+            <svg class="icon">
+              <use href="#icon-shield" />
+            </svg>7 dias de garantia
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 04 · PROVA -->
+  <!-- 04 · POR DENTRO -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">04 · Por dentro</p>
+        <h2 class="section-title">Veja páginas reais do material</h2>
+        <p class="lede">Arraste para o lado para folhear algumas páginas do que será seu em instantes.</p>
+      </div>
+
+      <div class="carousel carousel--previews" data-carousel data-reveal>
+        <div class="carousel__viewport" tabindex="0" role="group" aria-label="Páginas do material — role para o lado para ver todas">
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-02-mesociclos.jpg"
+                alt="Mesociclos das Aulas" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>250 Aulas · Os 10 Mesociclos</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-03-aula001.jpg"
+                alt="Aula 001 na íntegra" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>250 Aulas · Treino 001 Completo</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/wod-04-aula003.jpg"
+                alt="Aula 003 na íntegra" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>250 Aulas · Treino 003 Detalhado</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/mc-02-indice.jpg"
+                alt="Índice da Master Class" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>Master Class · Sumário Completo</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/mc-04-fisiologia.jpg"
+                alt="Fisiologia Aplicada" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>Master Class · Fisiologia do HYROX</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-coach-03-testes.jpg"
+                alt="5 Testes em 10 Minutos" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>Coaches · Bateria de Testes</figcaption>
+            </figure>
+          </div>
+
+          <div class="carousel__item">
+            <figure class="preview">
+              <img
+                src="https://cdn.jsdelivr.net/gh/MatheusMattos-Dev/hyrox-page@main/assets/images/previews/bonus-plano-03-semana01.jpg"
+                alt="Semana 01 do Plano" width="1000" height="1415" loading="lazy" decoding="async">
+              <figcaption>Plano 12 Semanas · Semana 01</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="carousel__nav">
+          <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev
+            aria-label="Página anterior">
+            <svg class="icon">
+              <use href="#icon-pace" />
+            </svg>
+          </button>
+          <button type="button" class="carousel__btn" data-carousel-next
+            aria-label="Página seguinte">
+            <svg class="icon">
+              <use href="#icon-pace" />
+            </svg>
+          </button>
+          <div class="carousel__rail" aria-hidden="true">
+            <span class="carousel__bar" data-carousel-bar></span>
+          </div>
+          <span class="carousel__count" data-carousel-count></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · PROVA -->
   <section class="section section--dark">
     <div class="container">
       <div class="section__head" data-reveal>
-        <p class="eyebrow">04 · Na prática</p>
+        <p class="eyebrow">05 · Na prática</p>
         <h2 class="section-title">Quem já usa no dia a dia</h2>
       </div>
 
@@ -1797,8 +2476,93 @@
     </div>
   </section>
 
+  <!-- FAIXA DE CTA 2 -->
+  <section class="section section--tight section--paper-alt">
+    <div class="container">
+      <div class="cta-strip" data-reveal>
+        <div class="cta-strip__copy">
+          <p class="eyebrow">Condição de início de mês</p>
+          <h2 class="cta-strip__title">Encerrada a campanha, cada material volta a ser vendido separado</h2>
+        </div>
+        <div class="cta-strip__actions">
+          <a href="https://pay.wiapy.com/ogJsn_tWH8XO" class="btn btn--primary" target="_blank" rel="noopener" data-checkout="Pacote Completo — Início de Mês" data-sku="pacote-completo" data-price="12.50">
+            Garantir por R$ 12,50
+          </a>
+          <p class="trust-line">
+            <svg class="icon">
+              <use href="#icon-shield" />
+            </svg>Acesso imediato
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · PARA QUEM É -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">06 · Para quem é</p>
+        <h2 class="section-title">Isso serve para você?</h2>
+        <p class="lede">
+          Prefiro que você não compre a comprar esperando outra coisa. Então: o que este material é,
+          e o que ele não é.
+        </p>
+      </div>
+
+      <div class="fit-grid" data-reveal>
+        <div class="fit fit--yes">
+          <h3>É para você se</h3>
+          <ul>
+            <li>
+              <svg class="icon">
+                <use href="#icon-check" />
+              </svg>Dá aula de funcional, HYROX ou CrossFit e quer parar de montar treino do zero toda semana
+            </li>
+            <li>
+              <svg class="icon">
+                <use href="#icon-check" />
+              </svg>Está começando e precisa de um método pronto para seguir, não de mais teoria solta
+            </li>
+            <li>
+              <svg class="icon">
+                <use href="#icon-check" />
+              </svg>Quer competir e nunca teve uma periodização de verdade
+            </li>
+            <li>
+              <svg class="icon">
+                <use href="#icon-check" />
+              </svg>Tem turma com níveis misturados e precisa das adaptações já prescritas
+            </li>
+          </ul>
+        </div>
+
+        <div class="fit fit--no">
+          <h3>Não é para você se</h3>
+          <ul>
+            <li>
+              <svg class="icon">
+                <use href="#icon-close" />
+              </svg>Procura acompanhamento individual, um a um — aqui é material completo mais direcionamento
+            </li>
+            <li>
+              <svg class="icon">
+                <use href="#icon-close" />
+              </svg>Espera vídeo-aula gravada: o material é escrito, em PDF, para você aplicar
+            </li>
+            <li>
+              <svg class="icon">
+                <use href="#icon-close" />
+              </svg>Só quer acumular arquivo na nuvem sem intenção de aplicar nada
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- GARANTIA -->
-  <section class="section section--tight">
+  <section class="section section--tight section--paper-alt">
     <div class="container">
       <div class="guarantee" data-reveal>
         <svg class="icon">
@@ -1816,11 +2580,11 @@
     </div>
   </section>
 
-  <!-- 05 · FAQ -->
+  <!-- 07 · FAQ -->
   <section class="section">
     <div class="container">
       <div class="section__head" data-reveal>
-        <p class="eyebrow">05 · Dúvidas</p>
+        <p class="eyebrow">07 · Dúvidas</p>
         <h2 class="section-title">Perguntas frequentes</h2>
       </div>
 
@@ -1932,11 +2696,14 @@
     <symbol id="icon-play" viewBox="0 0 24 24">
       <path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor" stroke-linejoin="round" />
     </symbol>
-    <symbol id="icon-users" viewBox="0 0 24 24">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <line x1="5" y1="5" x2="19" y2="19" />
+      <line x1="19" y1="5" x2="5" y2="19" />
+    </symbol>
+    <symbol id="icon-pace" viewBox="0 0 24 24">
+      <path d="M3 17 L9 17" />
+      <path d="M9 8 L17 8" />
+      <path d="M13 4 L21 12 L13 20" />
     </symbol>
   </svg>
 
@@ -2114,6 +2881,96 @@
 
         stickyIo.observe(checkoutSection);
       }
+
+      /* ── 3b. Carrosséis ───────────────────────────────────────────────
+         O trilho rola sozinho no dedo e no trackpad — isto aqui só acrescenta
+         setas, barra de progresso e contador para quem está no mouse. Se tudo
+         couber na tela, a navegação some em vez de ficar ali inerte. */
+      document.querySelectorAll('[data-carousel]').forEach(function (car) {
+        var viewport = car.querySelector('.carousel__viewport');
+        var itens = car.querySelectorAll('.carousel__item');
+        var btnPrev = car.querySelector('[data-carousel-prev]');
+        var btnNext = car.querySelector('[data-carousel-next]');
+        var barra = car.querySelector('[data-carousel-bar]');
+        var contador = car.querySelector('[data-carousel-count]');
+        var nav = car.querySelector('.carousel__nav');
+        if (!viewport || !itens.length) return;
+
+        var suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* Passo real entre dois itens (largura + gap), medido do DOM em vez de
+           replicado do CSS: assim o clamp de largura do item não precisa ser
+           repetido aqui e sair de sincronia. */
+        var passo = function () {
+          if (itens.length < 2) return itens[0].getBoundingClientRect().width;
+          return itens[1].getBoundingClientRect().left - itens[0].getBoundingClientRect().left;
+        };
+
+        var maxScroll = function () {
+          return viewport.scrollWidth - viewport.clientWidth;
+        };
+
+        var atualizar = function () {
+          var max = maxScroll();
+          var transborda = max > 1;
+
+          if (nav) nav.hidden = !transborda;
+          if (!transborda) return;
+
+          var x = viewport.scrollLeft;
+          if (btnPrev) btnPrev.disabled = x <= 1;
+          if (btnNext) btnNext.disabled = x >= max - 1;
+
+          if (barra) {
+            var visivel = viewport.clientWidth / viewport.scrollWidth;
+            barra.style.width = (visivel * 100) + '%';
+            /* translate em porcentagem da própria barra: a fração percorrida
+               do trilho é x/max aplicada ao espaço que sobra. */
+            var percorrido = (x / max) * (1 - visivel) * 100;
+            barra.style.transform = 'translateX(' + (percorrido / visivel) + '%)';
+          }
+
+          if (contador) {
+            var p = passo() || 1;
+            var primeiro = Math.min(itens.length, Math.round(x / p) + 1);
+            contador.textContent = primeiro + ' / ' + itens.length;
+          }
+        };
+
+        var mover = function (dir) {
+          var p = passo() || viewport.clientWidth;
+          /* Avança páginas inteiras, não um item: com três cards visíveis,
+             pular de um em um faz a seta parecer quebrada. */
+          var porPagina = Math.max(1, Math.floor(viewport.clientWidth / p));
+          viewport.scrollBy({
+            left: dir * p * porPagina,
+            behavior: suave ? 'smooth' : 'auto'
+          });
+        };
+
+        if (btnPrev) btnPrev.addEventListener('click', function () { mover(-1); });
+        if (btnNext) btnNext.addEventListener('click', function () { mover(1); });
+
+        viewport.addEventListener('scroll', function () {
+          /* rAF em vez de listener direto: o scroll dispara dezenas de vezes
+             por segundo e cada leitura de layout aqui força reflow. */
+          if (viewport._raf) return;
+          viewport._raf = requestAnimationFrame(function () {
+            viewport._raf = null;
+            atualizar();
+          });
+        }, { passive: true });
+
+        window.addEventListener('resize', atualizar, { passive: true });
+
+        /* As capas entram com loading="lazy": quando a primeira decodifica, a
+           largura do trilho muda e o progresso precisa ser refeito. */
+        car.querySelectorAll('img').forEach(function (img) {
+          if (!img.complete) img.addEventListener('load', atualizar, { once: true });
+        });
+
+        atualizar();
+      });
 
       /* ── 4. Pixel: sinais de funil ────────────────────────────────────
          Mesmo desenho da página principal. Sem evento intermediário o Meta não

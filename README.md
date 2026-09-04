@@ -43,6 +43,41 @@ Soma avulsa: **R$ 122,50** · Oferta: **R$ 12,50** · Economia: **R$ 110,00** (9
 - A barra fixa usa `visibility` + `inert` quando escondida, para não capturar `Tab` nem leitor de tela.
 - `@media (prefers-reduced-motion: reduce)` desliga ticker, pulse e transições.
 
+## 🧭 Estrutura do funil
+Cabeçalho de marca (mesmo brand da `hyrox-page`, sem navegação — link de menu é porta de saída
+numa página de oferta) → ticker de urgência → hero → **bloco da oferta** → 01 O problema →
+02 O pacote → 03 A conta → **faixa de CTA** → 04 Por dentro → 05 Na prática → **faixa de CTA** →
+06 Para quem é → garantia → 07 Dúvidas → fechamento → barra fixa.
+
+- **5 pontos de compra** na página: bloco da oferta, duas faixas de CTA no meio, fechamento e barra fixa.
+  A trava do `InitiateCheckout` garante um disparo por sessão mesmo com todos eles.
+- **01 O problema** vem depois do preço, não antes: quem chega do anúncio pronto pra comprar
+  encontra o botão cedo; quem precisa ser convencido tem a agitação logo em seguida.
+- **06 Para quem é** diz também para quem *não* é. Reduz reembolso e sustenta a garantia de 7 dias.
+- Fundos alternam papel / papel-alt / tinta a cada seção, no ritmo da `hyrox-page`.
+
+## 🎠 Carrossel
+Componente único (`.carousel`), usado em **02 O pacote** (5 materiais) e **04 Por dentro** (7 páginas).
+
+- O trilho é `scroll-snap` nativo: continua rolando no dedo e no trackpad. As setas, a barra de
+  progresso e o contador são camada extra para quem está no mouse.
+- Barra de rolagem nativa escondida (`scrollbar-width: none` + `::-webkit-scrollbar`) — era o que
+  aparecia feio embaixo das prévias.
+- Se todos os itens couberem na tela, a navegação inteira some (`nav.hidden`) em vez de ficar inerte.
+  Precisa do `.carousel__nav[hidden] { display: none }`: `display:flex` tem a mesma especificidade
+  que o `[hidden]` do navegador e é declarado depois.
+- O passo é medido do DOM (distância entre dois itens), não copiado do CSS — assim o `clamp` da
+  largura do item não precisa ser repetido no JS.
+- As setas avançam **uma página inteira**, não um item: com três cards visíveis, pular de um em um
+  faz a seta parecer quebrada.
+- Setas usam `#icon-pace` do sprite, a de voltar espelhada por `scaleX(-1)`.
+
+## 🎨 Ícones
+**Nunca emoji na interface.** Todo ícone vem do sprite SVG inline, copiado do `hyrox-page`:
+`icon-clock`, `icon-check`, `icon-shield`, `icon-pace`, `icon-play`, `icon-close`, `icon-sound-on/off`.
+Uso: `<svg class="icon"><use href="#icon-clock" /></svg>`.
+Emoji renderiza na fonte do sistema, traz cor própria e não acompanha o peso tipográfico da página.
+
 ## ⚡ Performance
 - Imagens medidas e com `width`/`height` fixos + `aspect-ratio` no CSS: zero CLS.
 - A arte do hero (941x1672, 507 KB) é o LCP — leva `fetchpriority="high"` e tem `preconnect` para o domínio dela.
