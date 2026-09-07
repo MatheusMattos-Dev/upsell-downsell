@@ -80,9 +80,15 @@ Emoji renderiza na fonte do sistema, traz cor própria e não acompanha o peso t
 
 ## ⚡ Performance
 - Imagens medidas e com `width`/`height` fixos + `aspect-ratio` no CSS: zero CLS.
-- A arte do hero (941x1672, 507 KB) é o LCP — leva `fetchpriority="high"` e tem `preconnect` para o domínio dela.
-- `feed.mp4` tem **5,4 MB** e por isso **não** usa `autoplay`: o play só acontece quando a seção entra na tela,
-  e o vídeo pausa e volta a ficar mudo ao sair. Sem isso, o arquivo baixava no load e disputava banda com o hero.
+- **O hero é um depoimento em vídeo**, não mais a arte da oferta: `assets/hero-feedback.mp4`
+  (H.264 720x1280, 45 s, 7,2 MB) com `poster` no primeiro quadro (`hero-feedback-poster.jpg`, 39 KB) —
+  o pôster segura a caixa até o vídeo abrir e é exatamente o quadro em que a reprodução começa, sem salto.
+  O master de celular (4K HEVC, 128 MB) fica fora do Git: HEVC não toca em Chrome/Firefox e 128 MB estoura
+  o limite de 100 MB por arquivo do GitHub. Regenerar com:
+  `ffmpeg -i MASTER.mp4 -vf scale=720:1280 -c:v libx264 -preset slow -crf 29 -maxrate 1200k -bufsize 2400k -pix_fmt yuv420p -r 30 -c:a aac -b:a 64k -ac 1 -movflags +faststart assets/hero-feedback.mp4`
+- Os dois vídeos da página (hero e prova) passam pelo mesmo `ligarDepoimento()`: entram mudos, tocam quando
+  entram na tela e pausam + voltam a ficar mudos ao sair. Sem isso, os 5,4 MB do `feed.mp4` baixavam no load
+  e disputavam banda com o hero.
 - Capas são retrato (1200x1500 e 1000x1415); os cards recortam em `3 / 4`, não em paisagem.
 - Revelação por scroll (`[data-reveal]`) desligada no celular e sob `prefers-reduced-motion`.
 

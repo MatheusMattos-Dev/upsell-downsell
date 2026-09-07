@@ -28,9 +28,10 @@
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-  <!-- A arte do hero é o LCP e mora noutro domínio; sem o preconnect o
-       navegador só abre a conexão depois de parsear a tag. -->
-  <link rel="preconnect" href="https://fiapy.nyc3.cdn.digitaloceanspaces.com" crossorigin>
+  <!-- Capas e o vídeo da seção de prova moram no jsDelivr; sem o preconnect o
+       navegador só abre a conexão depois de parsear a tag. O vídeo do hero é
+       local, e o domínio da Fiapy só aparece na og:image (que o navegador não
+       busca no carregamento) — por isso nenhum dos dois tem preconnect. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
   <!-- Google Fonts -->
@@ -711,17 +712,10 @@
       max-width: 400px;
       margin-inline: auto;
       display: block;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .hero__visual:hover {
-      transform: translateY(-2px);
-    }
-
-    .hero__visual:active {
-      transform: scale(0.99);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--line-on-paper);
+      background: var(--ink);
     }
 
     .hero__actions {
@@ -732,15 +726,49 @@
       box-shadow: 0 12px 30px rgba(255, 75, 31, 0.32);
     }
 
-    .hero__visual img {
+    .hero__video {
+      display: block;
       width: 100%;
-      height: auto;
-      /* Reserva a caixa antes do download: sem isso o texto salta quando os
-         507 KB da arte chegam. */
-      aspect-ratio: 941 / 1672;
+      /* O depoimento é vertical 9:16; a caixa já nasce no tamanho certo em vez
+         de crescer quando os metadados chegam e empurrar o CTA pra baixo. */
+      aspect-ratio: 9 / 16;
       object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid var(--line-on-paper);
+      background: var(--ink);
+      cursor: pointer;
+    }
+
+    /* Mesmo selo da seção de prova: em iOS no modo de baixo consumo o play
+       automático não acontece, e sem ele a pessoa vê um quadro parado sem
+       saber que dá pra tocar. */
+    .hero__video-play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .hero__visual.is-paused .hero__video-play {
+      opacity: 1;
+    }
+
+    .hero__video-play span {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(14, 13, 8, 0.72);
+      border: 2px solid var(--rope);
+      color: var(--rope);
+      display: grid;
+      place-items: center;
+    }
+
+    .hero__video-play .icon {
+      width: 26px;
+      height: 26px;
+      margin-left: 3px;
     }
 
     .hero__tag {
@@ -2071,13 +2099,31 @@
           </div>
         </div>
 
-        <a href="#checkoutSection" class="hero__visual" aria-label="Ver detalhes e adquirir o pacote completo">
-          <span class="hero__tag">Pacote All-In-One</span>
-          <img
-            src="https://fiapy.nyc3.cdn.digitaloceanspaces.com/static/6a34d146429e4f28412fa8a1/9e8a2e336c21c4f18e04_-_oferta_comeco_de_mes_menos_1mb.jpg"
-            alt="Oferta Especial Início de Mês — Todos os produtos HYROX"
-            width="941" height="1672" loading="eager" fetchpriority="high" decoding="async">
-        </a>
+        <!-- Deixou de ser link pro checkout: com um depoimento no lugar da arte,
+             o toque precisa dar play/pause e o botão precisa devolver o som. O
+             caminho pro checkout continua no botão logo acima. -->
+        <div class="hero__visual">
+          <span class="hero__tag">Feedback real</span>
+          <video id="heroVideo" class="hero__video" loop muted playsinline preload="metadata"
+            poster="assets/hero-feedback-poster.jpg">
+            <source src="assets/hero-feedback.mp4" type="video/mp4">
+            Seu navegador não suporta reprodução de vídeo.
+          </video>
+          <div class="hero__video-play" aria-hidden="true">
+            <span>
+              <svg class="icon">
+                <use href="#icon-play" />
+              </svg>
+            </span>
+          </div>
+          <button type="button" class="sound-btn" id="btnHeroSound" aria-pressed="false"
+            aria-label="Ativar som do vídeo">
+            <svg class="icon">
+              <use href="#icon-sound-off" />
+            </svg>
+            <span id="heroSoundLabel">Ativar Som</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -2484,7 +2530,7 @@
       <div class="proof-grid" data-reveal>
         <div class="proof-video">
           <!-- Sem autoplay: o arquivo tem 5,4 MB e baixava junto com a página,
-               brigando com a arte do hero pela banda e queimando o pacote de
+               brigando com o vídeo do hero pela banda e queimando o pacote de
                dados de quem chega pelo anúncio. O play acontece quando a seção
                entra na tela. -->
           <video id="feedVideo" loop muted playsinline preload="metadata">
@@ -2899,56 +2945,58 @@
         tick = setInterval(updateClock, 1000);
       }
 
-      /* ── 2. Vídeo de depoimento ───────────────────────────────────────
-         Entra mudo (única forma de o play automático passar no celular) e só
-         começa quando a seção aparece — o arquivo tem 5,4 MB e não pode
-         disputar banda com a arte do hero no carregamento. */
-      var feedVideo = document.getElementById("feedVideo");
-      var btnSound = document.getElementById("btnSound");
-      var soundLabel = document.getElementById("soundLabel");
-      var proofVideo = document.querySelector(".proof-video");
+      /* ── 2. Vídeos de depoimento ──────────────────────────────────────
+         São dois na página — o do hero e o da seção de prova — e os dois se
+         comportam igual: entram mudos (única forma de o play automático passar
+         no celular) e só começam quando aparecem na tela, pra que o de baixo
+         não desça junto com a página disputando banda com o de cima. */
+      var ligarDepoimento = function (idVideo, idBotao, idRotulo, seletorCaixa) {
+        var video = document.getElementById(idVideo);
+        var botao = document.getElementById(idBotao);
+        var rotulo = document.getElementById(idRotulo);
+        var caixa = video && video.closest(seletorCaixa);
+        if (!video || !botao || !rotulo || !caixa) return;
 
-      if (feedVideo && btnSound && soundLabel) {
-        var soundIcon = btnSound.querySelector("use");
+        var iconeSom = botao.querySelector("use");
 
         var setSound = function (on) {
-          feedVideo.muted = !on;
-          btnSound.setAttribute("aria-pressed", String(on));
-          btnSound.setAttribute("aria-label", on ? "Desativar som do vídeo" : "Ativar som do vídeo");
-          soundLabel.textContent = on ? "Desativar Som" : "Ativar Som";
-          if (soundIcon) soundIcon.setAttribute("href", on ? "#icon-sound-on" : "#icon-sound-off");
+          video.muted = !on;
+          botao.setAttribute("aria-pressed", String(on));
+          botao.setAttribute("aria-label", on ? "Desativar som do vídeo" : "Ativar som do vídeo");
+          rotulo.textContent = on ? "Desativar Som" : "Ativar Som";
+          if (iconeSom) iconeSom.setAttribute("href", on ? "#icon-sound-on" : "#icon-sound-off");
         };
 
         /* O selo de play só aparece quando o vídeo está parado: em iOS no modo
            de baixo consumo o play automático não acontece, e sem o selo a
            pessoa via um quadro congelado sem saber que dava pra tocar. */
         var syncPaused = function () {
-          if (proofVideo) proofVideo.classList.toggle("is-paused", feedVideo.paused);
+          caixa.classList.toggle("is-paused", video.paused);
         };
-        feedVideo.addEventListener("play", syncPaused);
-        feedVideo.addEventListener("pause", syncPaused);
+        video.addEventListener("play", syncPaused);
+        video.addEventListener("pause", syncPaused);
         syncPaused();
 
         var tryPlay = function () {
-          var p = feedVideo.play();
+          var p = video.play();
           if (p && p.catch) p.catch(function () { syncPaused(); });
         };
 
-        btnSound.addEventListener("click", function () {
-          var ligando = feedVideo.muted;
+        botao.addEventListener("click", function () {
+          var ligando = video.muted;
           setSound(ligando);
           if (ligando) {
             /* Volta ao início: com som, o depoimento vale desde a primeira fala. */
-            feedVideo.currentTime = 0;
-            var p = feedVideo.play();
+            video.currentTime = 0;
+            var p = video.play();
             if (p && p.catch) p.catch(function () { setSound(false); syncPaused(); });
           }
         });
 
         /* Tocar no próprio vídeo dá play/pause — é o gesto que a pessoa já
            espera de um vídeo vertical no celular. */
-        feedVideo.addEventListener("click", function () {
-          if (feedVideo.paused) tryPlay(); else feedVideo.pause();
+        video.addEventListener("click", function () {
+          if (video.paused) tryPlay(); else video.pause();
         });
 
         if ("IntersectionObserver" in window) {
@@ -2959,16 +3007,19 @@
               } else {
                 /* Sai da tela: pausa e devolve o mudo, pra não ficar áudio
                    tocando numa seção que a pessoa já passou. */
-                feedVideo.pause();
-                if (!feedVideo.muted) setSound(false);
+                video.pause();
+                if (!video.muted) setSound(false);
               }
             });
           }, { threshold: 0.35 });
-          videoIo.observe(feedVideo);
+          videoIo.observe(video);
         } else {
           tryPlay();
         }
-      }
+      };
+
+      ligarDepoimento("heroVideo", "btnHeroSound", "heroSoundLabel", ".hero__visual");
+      ligarDepoimento("feedVideo", "btnSound", "soundLabel", ".proof-video");
 
       /* ── 3. Barra fixa depois que o bloco da oferta sai da tela ──────
          O inert acompanha a classe: escondida, a barra não recebe Tab nem é

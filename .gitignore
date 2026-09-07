@@ -4,3 +4,8 @@
 # Lixo de sistema
 .DS_Store
 Thumbs.db
+
+# Master do video do hero: 128 MB em HEVC 4K, acima do limite de 100 MB por
+# arquivo do GitHub. O que a pagina usa e o assets/hero-feedback.mp4, gerado
+# a partir dele em H.264 720x1280.
+assets/VIDEO-*.mp4
